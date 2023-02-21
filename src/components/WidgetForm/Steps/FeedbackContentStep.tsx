@@ -6,6 +6,8 @@ import { ScreenshotButton } from '../ScreenshotButton'
 
 import { FeedbackType, feedbackTypes } from '..'
 
+import { api } from '../../../lib/api'
+
 interface FeedbackContentStepProps {
   feedbackType: FeedbackType
   onFeedbackRestartRequested: () => void
@@ -22,12 +24,13 @@ export function FeedbackContentStep({
 
   const feedbackTypeInfo = feedbackTypes[feedbackType]
 
-  function handleSubmitFeedback(event: FormEvent) {
+  async function handleSubmitFeedback(event: FormEvent) {
     event.preventDefault()
 
-    console.log({
-      screenshot,
+    await api.post('/feedbacks', {
+      type: feedbackType,
       comment,
+      screenshot,
     })
 
     onFeedbackSent()
